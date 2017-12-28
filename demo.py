@@ -23,6 +23,8 @@ classes = 10  # digits
 batch = speech_data.mfcc_batch_generator(total_size, height)
 X, Y = next(batch)
 
+Y = speech_data.convert_to_sparse(Y)
+
 # Network building
 net = tflearn.input_data([None, width, height])
 net = tflearn.lstm(net, 50, dropout=0.8, return_seq=True)
