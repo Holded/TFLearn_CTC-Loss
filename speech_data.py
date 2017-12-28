@@ -44,3 +44,16 @@ def mfcc_batch_generator(batch_size=10, height=120):
         batch_features = []  # Reset for next batch
         labels = []
 
+def convert_to_sparse(labels, dtype=np.int32):
+  indices = []
+  values = []
+ 
+  for n, seq in enumerate(labels):
+    indices.extend(zip([n] * len(seq), range(len(seq))))
+    values.extend(seq)
+ 
+  indices = np.asarray(indices, dtype=dtype)
+  values = np.asarray(values, dtype=dtype)
+  shape = np.asarray([len(labels), np.asarray(indices).max(0)[1] + 1], dtype=dtype)
+ 
+  return indices, values, shape
