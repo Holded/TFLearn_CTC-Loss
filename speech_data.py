@@ -34,25 +34,12 @@ def mfcc_batch_generator(batch_size=10, height=120):
       
       mfcc_old = sio.loadmat(path+wav)
       mfcc_old = mfcc_old['MFCC_pro']      
-
-      #mfcc_old = librosa.feature.mfcc(wave, sr, n_mfcc=13)
-      #delta_mfcc = librosa.feature.delta(mfcc_old, order=1)
-      #delta_delta_mfcc = librosa.feature.delta(mfcc_old, order=2)
-
-      #mfcc = numpy.hstack((mfcc_old, delta_mfcc, delta_delta_mfcc))
-      #mfcc = numpy.concatenate((mfcc_old, delta_mfcc),axis=0)
       mfcc = mfcc_old      
-
-      #mfcc = mfcc.astype(int)
-      #print(np.array(mfcc).shape)
 
       mfcc=np.pad(mfcc,((0,0),(0,height-len(mfcc[0]))), mode='constant', constant_values=0)
       batch_features.append(np.array(mfcc))
 
       if len(batch_features) >= batch_size:
-        # print(np.array(batch_features).shape)
-        # yield np.array(batch_features), labels
-        #print(str(mfcc_old)+'\r'+str(delta_mfcc)+'\r'+str(delta_delta_mfcc)+'\r'+str(len(mfcc)))
         yield batch_features, labels  # basic_rnn_seq2seq inputs must be a sequence
         batch_features = []  # Reset for next batch
         labels = []
