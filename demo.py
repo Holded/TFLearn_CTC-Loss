@@ -23,7 +23,8 @@ classes = 10  # digits
 batch = speech_data.mfcc_batch_generator(total_size, height)
 X, Y = next(batch)
 
-Y = speech_data.convert_to_sparse(Y)
+indices, values, shape = speech_data.convert_to_sparse(Y)
+Y = tf.SparseTensorValue(indices,values,shape)
 
 # Network building
 net = tflearn.input_data([None, width, height])
