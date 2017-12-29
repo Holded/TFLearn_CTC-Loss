@@ -17,7 +17,9 @@ path = "data/spoken_numbers_mat/" # 8 bit
 
 def dense_to_one_hot(labels_dense, num_classes=10):
   """Convert class labels from scalars to one-hot vectors."""
-  return numpy.eye(num_classes)[labels_dense]
+  a= [0,0,0,0,0,0,0,0,0,0]
+  a[labels_dense]=1
+  return a
 
 def mfcc_batch_generator(batch_size=10, height=120):
   batch_features = []
