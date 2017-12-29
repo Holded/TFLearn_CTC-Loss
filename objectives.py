@@ -1,7 +1,7 @@
 from __future__ import division, print_function, absolute_import
 
 import tensorflow as tf
-
+import numpy as np
 from .config import _EPSILON, _FLOATX
 from .utils import get_from_module
 
@@ -42,7 +42,12 @@ def softmax_categorical_crossentropy(y_pred, y_true):
 
 def ctc_loss(y_pred,y_true):
     with tf.name_scope(None):
-        return tf.nn.ctc_loss(y_pred,y_true,320)
+        batch_size=16
+        feature_num=20
+        X=tf.placeholder(dtype=tf.float32, shape=[batch_size,None,feature_num])
+        sequency_len=tf.reduce_sum(tf.cast(tf.not_equal(tf.reduce_sum(X,reduction_indices=2),0.),tf.int32),reduction_indices=1)
+        
+        return tf.nn.ctc_loss(y_true,y_pred,sequency_len)
 
 def categorical_crossentropy(y_pred, y_true):
     """ Categorical Crossentropy.
